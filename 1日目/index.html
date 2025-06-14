@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オセロ - Othello Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>オセロ</h1>
+        
+        <div class="game-info">
+            <div class="score">
+                <div class="stone black"></div>
+                <span>召使: <span id="blackScore">2</span></span>
+            </div>
+            <div class="current-player">
+                <img id="currentPlayerImage" class="player-image" src="img/black/stone.png" alt="現在のプレイヤー">
+                <span id="currentPlayerText">黒の番</span>
+            </div>
+            <div class="score">
+                <div class="stone white"></div>
+                <span>フリーナ: <span id="whiteScore">2</span></span>
+            </div>
+        </div>
+
+        <div id="gameOver" class="game-over" style="display: none;"></div>
+
+        <div class="board" id="board"></div>
+
+        <div class="controls">
+            <button class="btn btn-primary" onclick="resetGame()">新しいゲーム</button>
+            <button class="btn btn-primary" onclick="showHint()">ヒント表示</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
