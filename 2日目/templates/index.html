@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像オーガナイザー Web</title>
+    <style>
+        .top-image-frame {
+            width: 100px;
+            height: 100px;
+            border: 1px solid black;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px;
+        }
+        .top-image-frame img {
+            max-width: 90px;
+            max-height: 90px;
+            object-fit: contain;
+        }
+        .all-images-container {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid lightgray;
+            padding: 10px;
+            max-height: 300px; /* スクロールできるように高さを制限 */
+            overflow-y: auto;
+        }
+        .all-image-item {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .all-image-item img {
+            max-width: 90px;
+            max-height: 90px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <h1>画像オーガナイザー</h1>
+
+    <h2>選択された画像</h2>
+    <div id="selected-images-container">
+        {% for i in range(8) %}
+            <div class="top-image-frame" id="selected-image-{{ i }}"></div>
+        {% endfor %}
+    </div>
+    <button onclick="generateRandomImages()">ランダム生成</button>
+
+    <h2>すべての画像</h2>
+    <div class="all-images-container">
+        {% for image_file in image_files %}
+            <div class="all-image-item">
+                <img src="/static/images/{{ image_file }}" alt="{{ image_file }}">
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        async function generateRandomImages() {
+            const response = await fetch('/generate_random_images');
+            const data = await response.json();
+
+            const selectedImagesContainer = document.getElementById('selected-images-container');
+            // 既存の画像をクリア
+            for (let i = 0; i < 8; i++) {
+                const frame = document.getElementById(`selected-image-${i}`);
+                frame.innerHTML = ''; // 中身を空にする
+            }
+
+            // 新しい画像を表示
+            data.selected_images.forEach((imageUrl, index) => {
+                if (index < 8) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = `Random Image ${index + 1}`;
+                    document.getElementById(`selected-image-${index}`).appendChild(img);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
